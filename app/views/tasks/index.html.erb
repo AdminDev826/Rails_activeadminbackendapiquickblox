@@ -1,0 +1,129 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-lg-10">
+    <h2>Tasks</h2>
+  </div>
+  <div class="col-lg-2">
+  </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+  <%= render 'task_filter_form' %>
+
+  <div class="row">
+      <div class="col-lg-12">
+          <div class="ibox">
+              <div class="ibox-content">
+                <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+                  <thead>
+                    <tr>
+                      <th><%= sort_link "id", "Task ID" %></th>
+                      <th data-hide="phone">Task</th>
+                      <th><%= sort_link "price" %></th>
+                      <th><%= sort_link "created_at", "Posted On" %></th>
+                      <th data-hide="phone,tablet" >Posted By</th>
+                      <th data-hide="phone">Status</th>
+                      <th class="text-right" colspan="2">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% @tasks.each do |task| %>
+                      <tr>
+                        <td><%= task.id %></td>
+                        <td><%= link_to(truncate(task.description,:length => 47), task_path(task)) %></td>
+                        <td><%= task.price %></td>
+                        <td><%= task.created_at.to_date %></td>
+                        <td><%= link_to (task.user.full_name || task.user.email), user_path(task.user_id) %></td>
+                        <td>
+                          <% if task.status == "completed" %>
+                            <span class="label label-primary">Completed</span>
+                          <% elsif task.status == "in_progress" %>
+                            <span class="label label-info">In Progress</span>
+                          <% elsif task.status == "saved" %>
+                            <span class="label label-success">Saved</span>
+                          <% else %>
+                            <span class="label label-warning">Open</span>
+                          <% end %>
+                        </td>
+                        <td class="text-right" colspan="2">
+                          <div class="btn-group">
+                            <!-- <button class="btn-white btn btn-xs"><%= link_to("View", task_path(task)) %></button> -->
+                            <button class="btn-white btn btn-xs"><%= link_to("Edit", edit_task_path(task)) %></button>
+                            <button class="btn-white btn btn-xs"><%= link_to("Delete", task_path(task), method: :delete,  :data => {:confirm => 'Are you sure You would like to delete this Task?'}) %></button>
+                          </div>
+                        </td>
+                      </tr>
+                    <% end %>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td colspan="7">
+                        <ul class="pagination pull-right"><%= paginate @tasks %></ul>
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<% content_for :javascript do %>
+  <script type="text/javascript">
+    // $(function() {
+    //   $('.footable').footable();
+    // });
+    $(function () {
+        $("#range").ionRangeSlider({         //Range slider implemented from http://ionden.com/a/plugins/ion.rangeSlider/en.html
+            hide_min_max: true,
+            keyboard: true,
+            min: 0,
+            max: 5000,
+            from: '<%= @min_price || 0 %>',
+            to: '<%= @max_price || 2000 %>',
+            type: 'double',
+            step: 1,
+            prefix: "$",
+            grid: true
+        });
+
+    });
+  </script>
+  <script type="text/javascript">
+    var options = {
+      url: "/get_tasks_users",
+
+  getValue: "name",
+
+  list: { 
+    match: {
+      enabled: true
+    }
+  },
+
+  theme: "square"
+};
+
+$("#search-poster").easyAutocomplete(options);
+  </script>
+
+<script type="text/javascript">
+$(function() {
+
+  $('input[name="date_range"]').daterangepicker({
+      autoUpdateInput: false,
+      locale: {
+          cancelLabel: 'Clear'
+      }
+  });
+
+  $('input[name="date_range"]').on('apply.daterangepicker', function(ev, picker) {
+      $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+  });
+
+  $('input[name="date_range"]').on('cancel.daterangepicker', function(ev, picker) {
+      $(this).val('');
+  });
+
+});
+</script>
+
+<% end %>

@@ -1,0 +1,21 @@
+<h1 class="logo-name" style="margin-left:200px">SNAPTASK</h1>
+<div class="middle-box text-center loginscreen  animated fadeInDown">
+  <h3>Welcome to SNAPTASK</h3><%= form_for @admin do |f| %>
+  <% if @admin.errors.any? %>
+    <div class="error_messages">
+      <h2>Form is invalid</h2>
+      <ul>
+        <% for message in @admin.errors.full_messages %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+    <%= f.text_field :email, placeholder: :email, class: 'form-control' %>
+    <div style="padding-bottom: 10px"></div>
+    <%= f.password_field :password, placeholder: :password, class: 'form-control' %>
+    <div style="padding-bottom: 10px"></div>
+    <%= f.password_field :password_confirmation, placeholder: "Confirm Password", class: 'form-control' %>
+    <div style="padding-bottom: 10px"></div>
+   <%= submit_tag "Sign in",class: "btn btn-primary block full-width m-b" %>
+<% end %>

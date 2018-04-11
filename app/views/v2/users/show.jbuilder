@@ -1,0 +1,39 @@
+user = @user
+
+json.id user.id
+json.username user.username
+json.first_name user.first_name
+json.last_name user.last_name
+json.full_name user.full_name
+json.email user.email
+json.rating user.rating
+json.avatar user.avatar
+json.zipcode user.zipcode
+json.city user.city
+json.state user.state
+json.country user.country
+json.phone_number user.phone_number
+json.tag_line user.tag_line
+json.birthday user.birthday
+json.description user.description
+json.notify_message_replies user.notify_message_replies
+json.notify_comment_replies user.notify_comment_replies
+json.notify_task_status user.notify_task_status
+json.last_active user.last_active
+json.created_at user.created_at
+json.verified user.verified
+json.notify_task_bids user.notify_task_bids
+json.notify_task_assigned user.notify_task_assigned
+json.push_notify_allowed user.push_notify_allowed
+json.posted user.tasks.count
+json.completed user.task_work_offers.where(status: TaskWorkOffer.statuses[:completed]).count
+json.reviews user.reviews.count
+json.funding_type user.funding_type
+json.account_number user.account_number
+json.routing_number user.routing_number
+json.funding_email user.funding_email
+json.funding_mobile_phone user.funding_mobile_phone
+json.bt_merchant_id user.bt_merchant_id
+json.bt_merchant_status user.bt_merchant_status
+json.bt_merchant_response user.bt_merchant_response
+json.partial! 'notification'

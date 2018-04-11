@@ -1,0 +1,13 @@
+<h2>Hello Admin, </h2> 
+
+<p>A new message has been received.</p> 
+
+<h3>Message Details:-</h3>
+
+<p>Name : <%= @contact.name %></p>
+
+<p>Email : <%= @contact.email %></p>
+
+<p>Subject : <%= Contact::SUBJECT_VALUES[@contact.subject] %></p>
+
+<p>Body : <%= @contact.body %></p>

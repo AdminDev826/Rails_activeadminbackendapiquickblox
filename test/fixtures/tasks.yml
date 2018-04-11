@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  id: 1
+  name: "TestName1"
+  description: "Test description text"
+  user_id: 1
+  date: "2015-08-17 19:02:16"
+  price: 1000
+
+two:
+  id: 2
+  name: "TestName2"
+  description: "Test description text"
+  user_id: 1
+  date: "2015-08-17 19:02:16"
+  price: 2000

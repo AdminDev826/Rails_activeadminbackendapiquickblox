@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  task_id: 1
+  worker_id: 1
+  conversation_id: 1
+  total_cost: 1
+  duedate: 2015-10-11 12:25:11
+
+two:
+  task_id: 1
+  worker_id: 1
+  conversation_id: 1
+  total_cost: 1
+  duedate: 2015-10-11 12:25:11

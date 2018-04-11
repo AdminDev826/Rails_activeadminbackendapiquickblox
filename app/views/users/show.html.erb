@@ -1,0 +1,188 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-lg-10">
+    <h2>Profile</h2>
+    <ol class="breadcrumb">
+      <li>
+        <%= link_to "Home", dashboard_path %>
+      </li>
+      <li>
+        <%= link_to "Users", users_path %>
+      </li>
+      <li class="active">
+        <strong>Profile</strong>
+      </li>
+    </ol>
+  </div>
+  <div class="col-lg-2">
+
+</div>
+</div>
+<div class="wrapper wrapper-content">
+  <div class="row animated fadeInRight">
+    <div class="col-md-4">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>Profile Detail</h5>
+        </div>
+        <div id="animation_box" class="animated shake">
+          <div class="ibox-content no-padding border-left-right rubberBand">
+            <% if @user.avatar.present? %>
+              <%= image_tag @user.avatar, size: "315" %>
+            <% else %>
+              <img alt="image" class="img-responsive" src="<%= image_path('profile_big.jpg') %>">
+            <% end %>
+          </div>
+        </div>
+        <div class="ibox-content profile-content">
+          <h4><strong>Name: </strong><%= @user.full_name || "N/A" %></h4>
+          <h4><strong>Email: </strong><%= @user.email %></h4>
+          <p><i class="fa fa-map-marker"></i> <%= @user.state.presence || "N/A" %></p>
+          <h5>About me</h5>
+          <p>
+              <%= @user.description.presence || "Description Not Mentioned" %>
+          </p>
+          <div class="row m-t-lg">
+            <div class="col-md-4">
+              <span class="bar">5,3,9,6,5,9,7,3,5,2</span>
+              <h5><strong><%= @user.tasks.count %></strong> Tasks</h5>
+            </div>
+            <div class="col-md-4">
+              <span class="line">5,3,9,6,5,9,7,3,5,2</span>
+              <h5><strong><%= @user.task_work_offers.count %></strong>  Offers</h5>
+            </div>
+            <div class="col-md-4">
+              <span class="bar">5,3,2,-1,-3,-2,2,3,5,2</span>
+              <h5><strong><%= @user.tasks.where(status: Task.statuses[:completed]).count %></strong> Completed</h5>
+            </div>
+          </div>
+          <div class="user-button">
+            <div class="row">
+              <div class="col-md-6">
+              <%= link_to("<i class = 'fa fa-minus'></i> Delete".html_safe,user_path(@user.id),{method: :delete, class: "btn btn-danger",:data => {:confirm => "Are you sure you want to Delete?"}}) %>
+              </div>
+              <div class="col-md-6">
+              <% if @user.deactivated? %>
+                <%= link_to("<i class = 'fa fa-check'></i> Reactivate".html_safe,reactivate_user_path(@user.id),{method: :post,class: "btn btn-info",:data => {:confirm => "Are you sure you want to Reactivate?"}}) %>
+              <% else %>
+                <%= link_to("<i class = 'fa fa-ban'></i> Deactivate".html_safe,deactivate_user_path(@user.id),{method: :post,class: "btn btn-warning",:data => {:confirm => "Are you sure you want to Deactivate?"}}) %>
+              <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>  
+    </div>
+    <div class="col-md-8">
+        <div class="ibox float-e-margins">
+          <div class="ibox-title">
+            <h5>Summary</h5>
+            <div class="ibox-tools">
+              <a class="collapse-link">
+                <i class="fa fa-chevron-up"></i>
+              </a>
+            </div>
+          </div>
+            <div class="ibox-content">
+              <div>
+              <button class="btn btn-primary btn-block m" style="cursor: ;"><i class="fa fa-gavel"></i> Tasks</button>
+              <div class="feed-activity-list">
+                <div class="feed-element">
+                  <% if @user.tasks.present? %>
+                    <% @user.tasks.each do |task| %>
+                      <div class="feed-element">
+                        <a href="#" class="pull-left">
+                          <%#= image_tag task.category_image %>
+                        </a>
+                        <div class="media-body ">
+                          <small class="pull-right text-navy"> <%= task.created_at.strftime("%B %d, %Y") %></small>
+                          <strong><%= link_to(task.description.titleize, task_path(task)) %></strong> <br>
+                          <!-- <small class="text-muted">Today 4:21 pm - 12.06.2014</small> -->
+                          <div class="actions">
+                          <% if task.is_my_offer_accepted %>
+                            <a class="btn btn-xs btn-white"><i class="fa fa-thumbs-up"></i> Accepted </a>
+                          <% else %>
+                            <a class="btn btn-xs btn-white"><i class="fa fa-thumbs-down"></i> Not Accepted </a>
+                          <% end %>
+                          <a class="btn btn-xs btn-white"><i class="fa fa-angellist"></i> <%= task.status %> </a>
+                          </div>
+                        </div>
+                      </div>  
+                    <% end %>  
+                  <% end %>
+                </div>
+                <button class="btn btn-primary btn-block m"><i class="fa fa-bullhorn"></i> Task Offered</button>
+                <div class="feed-element">
+                  <% if @user.task_work_offers.present? %>
+                    <% @user.task_work_offers.each do |task_work_offer| %>
+                      <div class="feed-element">
+                        <a href="#" class="pull-left">
+                          <%#= image_tag task.category_image %>
+                        </a>
+                        <div class="media-body ">
+                          <small class="pull-right text-navy"> $ <%= task_work_offer.price %></small>
+                          <strong><%= task_work_offer.task.present? ? task_work_offer.task.description.titleize : "No Description" %></strong> <br>
+                          <div class="actions">
+                            <% if task_work_offer.task.present? && task_work_offer.task.is_my_offer_accepted %>
+                              <a class="btn btn-xs btn-white"><i class="fa fa-thumbs-up"></i> Accepted </a>
+                              <a class="btn btn-xs btn-white"><i class="fa fa-angellist"></i> <%= task_work_offer.task.status %> </a>
+                            <% else %>
+                              <a class="btn btn-xs btn-white"><i class="fa fa-thumbs-down"></i> Not Accepted </a>
+                            <% end %>
+                          </div>
+                        </div>
+                      </div>
+                    <% end %>
+                  <% end %>
+                </div>
+                <!--  <h5>Portfolio</h5>
+                  <div class="feed-element">
+                    <a href="#" class="pull-left">
+                      <img alt="image" class="img-circle" src="<%= image_path('a3.jpg') %>">
+                    </a>
+                    <div class="media-body ">
+                      <small class="pull-right">2h ago</small>
+                      <strong>Janet Rosowski</strong> add 1 photo on <strong>Monica Smith</strong>. <br>
+                      <small class="text-muted">2 days ago at 8:30am</small>
+                      <div class="photos">
+                        <a target="_blank" href="http://24.media.tumblr.com/20a9c501846f50c1271210639987000f/tumblr_n4vje69pJm1st5lhmo1_1280.jpg"> <img alt="image" class="feed-photo" src="<%= image_path('p1.jpg') %>"></a>
+                        <a target="_blank" href="http://37.media.tumblr.com/9afe602b3e624aff6681b0b51f5a062b/tumblr_n4ef69szs71st5lhmo1_1280.jpg"> <img alt="image" class="feed-photo" src="<%= image_path('p3.jpg') %>"></a>
+                      </div>
+                    </div>
+                  </div> -->
+                 
+                  </div>
+
+              </div>
+
+            </div>
+        </div>
+
+    </div>
+  </div>
+</div>
+
+
+<% content_for :javascript do %>
+  <script type="text/javascript">
+
+    $(function() {
+
+        $("span.pie").peity("pie", {
+            fill: ['#1ab394', '#d7d7d7', '#ffffff']
+        })
+
+        $(".line").peity("line", {
+            fill: '#1ab394',
+            stroke: '#169c81',
+        })
+
+        $(".bar").peity("bar", {
+            fill: ["#1ab394", "#d7d7d7"]
+        })
+
+
+    });
+
+  </script>
+<% end %>
+

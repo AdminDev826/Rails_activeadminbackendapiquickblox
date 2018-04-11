@@ -1,0 +1,65 @@
+<div class="wrapper wrapper-content">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="ibox float-e-margins">
+    <div class="input-group">
+      <%= form_tag(users_path, :method => :get) do %>
+        <%= text_field_tag :name_or_email, params[:name_or_email], placeholder: "Name or Email", class: 'input-sm form-control',style: 'width:80%' %>
+        <span class="input-group-btn">
+          <%= submit_tag "Go!",class: "btn btn-sm btn-primary" %>
+        </span>
+      <% end %>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th><%= sort_link "email",nil,"user" %></th>
+          <th><%= sort_link "first_name", "Username", "user" %></th>
+          <th><%= sort_link "created_at", "Joined on", "user" %></th>
+          <th><%= sort_link "last_active", nil, "user" %></th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+           <% if @users.present? %>
+              <% @users.each_with_index do |user,i| %>
+                <tr>
+                  <td><%= i + 1 %></td>
+                  <td><%= link_to user.email, user_path(user.id) %></td>
+                  <td><%= link_to (user.full_name || user.email), user_path(user.id) %></td>
+                  <td><%= user.created_at.strftime("%B %d, %Y") %></td>
+                  <td><%= user.last_active.present? ? user.last_active.strftime("%B %d, %Y") : ""   %></td>
+                  <% if user.active_status == "Active" %>
+                    <td class="font-bold text-navy">Active</td>
+                  <% else %>
+                    <td class="font-bold text-danger">Deactive</td>
+                  <% end %>
+                  <td><%= link_to "Edit", edit_user_path(user), {class: 'btn btn-primary dim'} %></td>
+                  <!-- <td><%#= link_to("Delete",user_path(user.id),{method: :delete, class: "btn btn-danger",:data => {:confirm => "Are you sure you want to Delete?"}}) %></td>
+                  <td>
+                    <%# if user.deactivated? %>
+                      <%# link_to("Reactivate",reactivate_user_path(user.id),{method: :post,class: "btn btn-info",:data => {:confirm => "Are you sure you want to Reactivate?"}}) %>
+                    <%# else %>
+                      <%#= link_to("Deactivate",deactivate_user_path(user.id),{method: :post,class: "btn btn-warning",:data => {:confirm => "Are you sure you want to Deactivate?"}}) %>
+                    <%# end %>
+                  </td> -->
+                </tr>
+              <% end %>
+            <% end %>
+        </tbody>
+      </table>
+      <% if !@users.present?%>
+        <div class="middle-box text-center animated fadeInDown">
+          <h2>Oh Snap!!</h2>
+          <h3 class="font-bold">No Record Found</h3>
+          <%= link_to "Go Back", dashboard_path,{"class" => "btn btn-primary"} %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+</div>
+</div>

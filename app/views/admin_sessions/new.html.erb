@@ -1,0 +1,11 @@
+<h1 class="logo-name" style="margin-left:200px">SNAPTASK</h1>
+<div class="middle-box text-center loginscreen  animated fadeInDown">
+  <h3>Welcome to SNAPTASK</h3>
+  <%= form_tag admin_sessions_path do %>
+    <%= text_field_tag :email, params[:email], placeholder: "username", class: 'form-control' %>
+    <div style="padding-bottom: 10px"></div>
+    <%= text_field_tag :password, params[:password], placeholder: "password", type: 'password', class: 'form-control' %>
+    <div style="padding-bottom: 10px"></div>
+    <%= submit_tag "Sign in",class: "btn btn-primary block full-width m-b" %>
+  <% end %>
+</div>

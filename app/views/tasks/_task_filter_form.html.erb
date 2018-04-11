@@ -1,0 +1,56 @@
+<%= form_tag(tasks_path, :method => :get) do %>
+    <div class="ibox-content m-b-sm border-bottom">
+      <div class="row">
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label class="control-label" for="task_id">Task ID</label>
+            <%= text_field_tag(:id,params[:id], :class => 'form-control',:placeholder => "ID") %>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label class="control-label" for="status">Task status</label>
+            <%#= text_field_tag(:status,params[:status], :class => 'form-control',:placeholder => "Status") %>
+            <%= select_tag 'status', options_for_select([["Select",""],["Open", 0], ["Saved", 1], ["In Progress", 2], ["Completed", 3]], :selected => filter_status_selector),:class=> 'form-control m-b' %>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label class="control-label" for="poster">Poster</label>
+            <%= text_field_tag(:poster,params[:poster], :class => 'form-control',:placeholder => "Enter Email", id: "search-poster") %>
+
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label class="control-label" for="date_added" style="margin-bottom: 20px;">Date Range</label>
+            <div class="input-group date">
+              <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+              <%= text_field_tag(:date_range,params[:date_range], :class => 'form-control',:value=> date_range_value_maker, name: "date_range") %>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label class="control-label" for="task-name" style="margin-bottom: 20px;" >Category</label>
+            <%#= text_field_tag(:category,params[:category], :class => 'form-control', :placeholder => "Category") %>
+            <%= select_tag('category_id', options_for_select([["Select",""]] + Category.all.collect {|c| [c.name.titleize, c.id]},{ include_blank: true,:selected =>  filter_category_selector}), :class=> 'form-control m-b') %>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label class="control-label" for="amount">Price Range</label>
+              <%= text_field_tag(:price_range,params[:price_range], :id => 'range',:value=>"") %>
+          </div>
+        </div>
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4" style="padding-top: 15px">
+            <div class="form-group">
+              <%= submit_tag "Submit",class: "btn btn-sm btn-primary bold","style" => "font-size: 14px" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>

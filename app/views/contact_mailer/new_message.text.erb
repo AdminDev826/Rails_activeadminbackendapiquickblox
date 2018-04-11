@@ -1,0 +1,13 @@
+Hello Admin,
+
+A new message has been received. 
+
+Message Details:-
+
+Name : <%= @contact.name %>
+
+Email : <%= @contact.email %>
+
+Subject : <%= Contact::SUBJECT_VALUES[@contact.subject] %>
+
+Body : <%= @contact.body %>
